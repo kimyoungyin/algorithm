@@ -125,4 +125,6 @@ bfs();
 
 -   [1926 그림](https://www.acmicpc.net/problem/1926) : 시작점 찾기
 -   [2178 미로 탐색](https://www.acmicpc.net/problem/2178) : 다차원 배열에서 최단경로
+    -   큐에 쌓이는 칸은 무조건 거리 순이 된다!
 -   [7576 토마토](https://www.acmicpc.net/problem/7576) : 여러 시작점에서 동시 시작 및 큐 시간초과 대응
+-   [7569 토마토](https://www.acmicpc.net/problem/7569) : 3차원 배열 담기
