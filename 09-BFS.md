@@ -130,3 +130,5 @@ bfs();
 -   [7569 토마토](https://www.acmicpc.net/problem/7569) : 3차원 배열 담기
 -   [4179 불!](https://www.acmicpc.net/problem/4179)
     -   시작점의 종류가 여러 개일 때: 동시에 시작하지만 따로 한 번씩 BFS를 돌려야 하는 경우
+-   [1697 숨바꼭질](https://www.acmicpc.net/problem/1697): 1차원 BFS와 순간이동.
+    -   거리는 큐에 쌓이는 순서대로이니 먼저 선점한 큐가 그 지점까지 가장 빠른 경로!
