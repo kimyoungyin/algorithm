@@ -128,3 +128,5 @@ bfs();
     -   큐에 쌓이는 칸은 무조건 거리 순이 된다!
 -   [7576 토마토](https://www.acmicpc.net/problem/7576) : 여러 시작점에서 동시 시작 및 큐 시간초과 대응
 -   [7569 토마토](https://www.acmicpc.net/problem/7569) : 3차원 배열 담기
+-   [4179 불!](https://www.acmicpc.net/problem/4179)
+    -   시작점의 종류가 여러 개일 때: 동시에 시작하지만 따로 한 번씩 BFS를 돌려야 하는 경우
