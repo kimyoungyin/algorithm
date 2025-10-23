@@ -17,6 +17,8 @@ for (let x = 0; x < N; x++) {
     }
 }
 
+min--; // 아무 지역도 물에 잠기지 않을 수 있음
+
 let maxCount = 0;
 const dx = [1, 0, -1, 0];
 const dy = [0, 1, 0, -1];
