@@ -1,64 +1,60 @@
-// 한 번 더 회전하는 것에 부담을 느끼지 말라 2*N = N
+// 내 풀이: 성공
+//  실수1: 케이스 별로 나눠야할 반복문 범위를 잘못 작성함
+// 실수2: 시작점으로 선정하지 않을 조건을 VISITED가 아닌 것으로 설정함
 const fs = require("fs");
 const lines = fs.readFileSync("dev/stdin").toString().trim().split("\n");
 
-const ans = [];
-
-const type = {
-    notVisited: 0,
-    visited: 1,
-    notCycle: 2,
-    cycle: 3,
+const TYPE = {
+    NOT_VISITED: 0,
+    VISITED: 1,
+    NOT_CYCLE: 2,
+    CYCLE: 3,
 };
-
-for (let i = 1; i < lines.length; i += 2) {
-    const board = lines[i + 1].split(" ").map((order) => Number(order) - 1); // 인덱스화
-    // 사이클 도는 중
-    const states = Array(board.length)
+// 케이스 별로
+for (let t = 0; t < lines[0]; t++) {
+    const boardCount = +lines[2 * t + 1];
+    const board = lines[2 * t + 2]
+        .split(" ")
+        .map(Number)
+        .map((order) => order - 1);
+    const states = Array(boardCount)
         .fill()
-        .map(() => type.notVisited);
-
-    for (let x = 0; x < states.length; x++) {
-        if (states[x] !== type.notVisited) continue; // 방문한 적이 없으면 시작
-        // 초기화 및 bfs 진행
-        let curX = x;
+        .map(() => TYPE.NOT_VISITED);
+    // 시작점 찾기
+    for (let x = 0; x < board.length; x++) {
+        if (states[x] !== TYPE.NOT_VISITED) continue;
+        let cur = x;
+        states[cur] = TYPE.VISITED;
         while (true) {
-            states[curX] = type.visited;
-            curX = board[curX];
-
-            // 이미 사이클이 아니거나, 사이클임이 확정되었을 떄 -> 지금까지 방문했던 것은 모두 사이클이 아님
-            if (states[curX] === type.notCycle || states[curX] === type.cycle) {
-                curX = x;
-                while (states[curX] === type.visited) {
-                    states[curX] = type.notCycle;
-                    curX = board[curX];
-                }
-                break;
-            }
-            // 방문했던 사람 y을 또 마주했을 때. x -> y 전까지는 사이클이 아니고, y -> y전까지는 사이클임
-            if (states[curX] === type.visited && curX !== x) {
-                while (states[curX] !== type.cycle) {
-                    states[curX] = type.cycle;
-                    curX = board[curX];
-                }
-                curX = x;
-                while (states[curX] !== type.cycle) {
-                    states[curX] = type.notCycle;
-                    curX = board[curX];
-                }
-                break;
-            }
-            // 자기 자신을 다시 마주쳤을 때: 지금까지 방문했던 것은 모두 사이클임
-            if (states[curX] === type.visited && curX === x) {
-                while (states[curX] !== type.cycle) {
-                    states[curX] = type.cycle;
-                    curX = board[curX];
+            cur = board[cur];
+            // 방문한 적 없었으면?
+            if (states[cur] === TYPE.NOT_VISITED) {
+                states[cur] = TYPE.VISITED;
+                continue;
+            } else {
+                // 방문한 것에 다시 돌아왔으면
+                if (cur === x) {
+                    // 자기 자신: 방문했던 모든 것 사이클 처리
+                    while (states[cur] === TYPE.VISITED) {
+                        states[cur] = TYPE.CYCLE;
+                        cur = board[cur];
+                    }
+                } else {
+                    // 다른 것: 다른 것을 돌면서 사이클 처리, 나머지 방문한 건 사이클 아님
+                    while (states[cur] === TYPE.VISITED) {
+                        states[cur] = TYPE.CYCLE;
+                        cur = board[cur];
+                    }
+                    // 나머지
+                    cur = x;
+                    while (states[cur] === TYPE.VISITED) {
+                        states[cur] = TYPE.NOT_CYCLE;
+                        cur = board[cur];
+                    }
                 }
                 break;
             }
         }
     }
-    ans.push(states.filter((state) => state === type.notCycle).length);
+    console.log(states.filter((state) => state === TYPE.NOT_CYCLE).length);
 }
-
-console.log(ans.join("\n"));
