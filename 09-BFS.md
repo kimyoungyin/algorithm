@@ -141,3 +141,4 @@ bfs();
 -   [\*2573 빙산](https://www.acmicpc.net/problem/2573): 보드를 다루는 모든 로직이 BFS, DFS인 Flood Fill 알고리즘일 필요는 없다. 어떤 동작을 할 때 연결된 것들끼리 그룹지어 생각해야 하는 건지 구분해보자.
 -   [\*2146 다리 만들기](https://www.acmicpc.net/problem/2146): 3차원 배열 상태관리 - 메모리 초과 / 대신 각 칸에 대해 BFS를 하나씩 진행하기
 -   [\*13549 숨바꼭질 3](https://www.acmicpc.net/problem/13549): 큐에 쌓이는 순서가 거리 순을 보장하지 못할 때
+-   [\*13913 숨바꼭질 4](https://www.acmicpc.net/problem/13913): 큐까지 찾아가는 경로를 따로 저장해야 할 때
