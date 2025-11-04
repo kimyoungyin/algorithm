@@ -142,3 +142,4 @@ bfs();
 -   [\*2146 다리 만들기](https://www.acmicpc.net/problem/2146): 3차원 배열 상태관리 - 메모리 초과 / 대신 각 칸에 대해 BFS를 하나씩 진행하기
 -   [\*13549 숨바꼭질 3](https://www.acmicpc.net/problem/13549): 큐에 쌓이는 순서가 거리 순을 보장하지 못할 때
 -   [\*13913 숨바꼭질 4](https://www.acmicpc.net/problem/13913): 큐까지 찾아가는 경로를 따로 저장해야 할 때
+-   [\*16920 확장 게임](https://www.acmicpc.net/problem/16920): 턴제 게임이며, 매 턴마다 BFS를 step만큼 실행할 때, nextQ를 생성 후 턴이 끝나면 q에서 교체
