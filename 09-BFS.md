@@ -143,3 +143,4 @@ bfs();
 -   [\*13549 숨바꼭질 3](https://www.acmicpc.net/problem/13549): 큐에 쌓이는 순서가 거리 순을 보장하지 못할 때
 -   [\*13913 숨바꼭질 4](https://www.acmicpc.net/problem/13913): 큐까지 찾아가는 경로를 따로 저장해야 할 때
 -   [\*16920 확장 게임](https://www.acmicpc.net/problem/16920): 턴제 게임이며, 매 턴마다 BFS를 step만큼 실행할 때, nextQ를 생성 후 턴이 끝나면 q에서 교체
+-   [\*11967 불 켜기](https://www.acmicpc.net/problem/11967): 현재 위치에서 할 수 있는 모든 일을 먼저 처리하고, 그 다음에 이동하는 것이 핵심
