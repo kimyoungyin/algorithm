@@ -145,3 +145,4 @@ bfs();
 -   [\*16920 확장 게임](https://www.acmicpc.net/problem/16920): 턴제 게임이며, 매 턴마다 BFS를 step만큼 실행할 때, nextQ를 생성 후 턴이 끝나면 q에서 교체
 -   [\*11967 불 켜기](https://www.acmicpc.net/problem/11967): 현재 위치에서 할 수 있는 모든 일을 먼저 처리하고, 그 다음에 이동하는 것이 핵심
 -   [\17071 숨바꼭질 5](https://www.acmicpc.net/problem/17071): 홀짝 최적화
+-   [\*9328 숨바꼭질 5](https://www.acmicpc.net/problem/9328): 모서리 끝을 들락날락 할 수 있을 때는 상하좌우 한 칸식 늘린 보드를 만들자! 재 방문해야 할 방은 따로 킵해두자
