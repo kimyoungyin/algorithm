@@ -21,7 +21,7 @@ class Queue {
         this.tail = null;
         this.length = 0;
     }
-    push_back(data) {
+    push(data) {
         const newNode = new Node(data);
         if (this.length === 0) {
             this.head = newNode;
@@ -32,7 +32,7 @@ class Queue {
         }
         this.length++;
     }
-    pop_front() {
+    pop() {
         if (!this.length) return undefined;
         const popped = this.head;
         if (this.length === 1) {
@@ -42,66 +42,101 @@ class Queue {
             this.head = popped.next;
         }
         this.length--;
-        return popped;
+        return popped.data;
     }
 }
 
-// 메모리 초과로 재사용
+let count = 0;
+let isPossible = false; // 두 백조가 만남?
+const start = [];
+const Q = new Queue(); // 물 BFS 큐
+const Q2 = new Queue(); // 다음날 녹을 얼음
+const LQ = new Queue(); // 백조 BFS 큐
+const LQ2 = new Queue(); // 다음날 탐색 예정 얼음
+
+// 백조 방문
 const vis = Array(X)
     .fill()
-    .map(() => Array(Y).fill(false)); // false or 1 or 2
+    .map(() => Array(Y).fill(false));
 
-const bfs = (idxs) => {
-    const q = new Queue();
-    const edges = [];
+// 물 방문
+const visited = Array(X)
+    .fill()
+    .map(() => Array(Y).fill(false));
 
-    idxs.forEach((arr) => {
-        q.push_back([...arr]); // x, y, 백조 식별자(1 or 2)
-        vis[arr[0]][arr[1]] = arr[2];
-    });
-    while (q.length) {
-        const [curX, curY, name] = q.pop_front().data;
+// 시작점 찾기 및 백조 하나 찾기
+for (let x = 0; x < X; x++) {
+    for (let y = 0; y < Y; y++) {
+        if (board[x][y] === "L") {
+            start.push(x);
+            start.push(y);
+        }
+        if (board[x][y] !== "X") {
+            Q.push([x, y]);
+            visited[x][y] = true;
+        }
+    }
+}
+
+LQ.push([...start.slice(0, 2)]); // 백조 시작
+board[start[0]][start[1]] = "."; // 백조 있던 자리도 물임
+vis[start[0]][start[1]] = true;
+
+while (!isPossible) {
+    // 1. 얼음 녹이기
+    // 1-1. 녹을 얼음 찾기
+    while (Q.length) {
+        const [curX, curY] = Q.pop();
+        for (let i = 0; i < 4; i++) {
+            const nx = curX + dx[i];
+            const ny = curY + dy[i];
+
+            if (nx < 0 || nx >= X || ny < 0 || ny >= Y || visited[nx][ny])
+                continue;
+            if (board[nx][ny] === "X") {
+                Q2.push([nx, ny]); // 녹을 얼음
+                visited[nx][ny] = true;
+            }
+        }
+    }
+    // 1-2. 녹이기(Q2 -> Q1)
+    while (Q2.length) {
+        const [curX, curY] = Q2.pop();
+        board[curX][curY] = ".";
+        Q.push([curX, curY]);
+    }
+
+    // 백조 탐색
+    while (LQ.length) {
+        const [curX, curY] = LQ.pop();
 
         for (let i = 0; i < 4; i++) {
             const nx = curX + dx[i];
             const ny = curY + dy[i];
 
             if (nx < 0 || nx >= X || ny < 0 || ny >= Y) continue;
+            if (vis[nx][ny]) continue;
             if (board[nx][ny] === "X") {
-                edges.push([nx, ny, name]); // 벽을 더하기
+                LQ2.push([nx, ny]); // 얼음이 녹아 탐색을 시작할 지점
+                vis[nx][ny] = true;
                 continue;
             }
-            if (vis[nx][ny] !== false) {
-                if (vis[nx][ny] === name) continue;
-                return true;
+            if (board[nx][ny] === "L") {
+                isPossible = true;
+                break;
             }
-            q.push_back([nx, ny, name]);
-            vis[nx][ny] = name;
+            // 물임
+            LQ.push([nx, ny]);
+            vis[nx][ny] = true;
         }
     }
-    return edges;
-};
-
-let Lidxs = [];
-let nameIdx = 1;
-for (let x = 0; x < X; x++) {
-    for (let y = 0; y < Y; y++) {
-        if (board[x][y] === "L") Lidxs.push([x, y, nameIdx++]);
+    // 다음날 준비(LQ2 -> LQ1)
+    while (LQ2.length) {
+        const [curX, curY] = LQ2.pop();
+        LQ.push([curX, curY]);
     }
+
+    count++;
 }
 
-let ans = 0;
-
-while (1) {
-    const connectedOrEdges = bfs(Lidxs);
-    if (!Array.isArray(connectedOrEdges)) {
-        console.log(ans);
-        break;
-    } else {
-        Lidxs = connectedOrEdges;
-    }
-    ans++;
-    Lidxs.forEach((arr) => {
-        board[arr[0]][arr[1]] = ".";
-    });
-}
+console.log(count);
