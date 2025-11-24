@@ -31,9 +31,7 @@ const bfs = (idxs) => {
 
     let flowerCount = 0;
 
-    for (const [idx, type] of idxs) {
-        const x = Math.floor(idx / M);
-        const y = idx % M;
+    for (const [x, y, type] of idxs) {
         q.push([x, y, type]);
         dis[x][y][type] = 0;
     }
@@ -79,7 +77,15 @@ const bfs = (idxs) => {
     return flowerCount;
 };
 
-const plantedArr = Array(G + R);
+const startCand = [];
+
+for (let x = 0; x < N; x++) {
+    for (let y = 0; y < M; y++) {
+        if (board[x][y] === 2) startCand.push([x, y]);
+    }
+}
+
+const pickedIdxs = Array(G + R);
 
 const plant = (k) => {
     if (k === G + R) {
@@ -87,13 +93,10 @@ const plant = (k) => {
         return;
     }
     let start = 0;
-    if (k > 0) start = plantedArr[k - 1] + 1;
-
-    for (let i = start; i < N * M; i++) {
-        const x = Math.floor(i / M);
-        const y = i % M;
-        if (board[x][y] !== 2) continue;
-        plantedArr[k] = i;
+    if (k > 0) start = pickedIdxs[k - 1] + 1;
+    // 최적화 포인트 1: 이미 선택할 곳은 정해져 있다.
+    for (let i = start; i < startCand.length; i++) {
+        pickedIdxs[k] = i;
         plant(k + 1);
     }
 };
@@ -109,7 +112,10 @@ const types = Array(G + R);
 
 const chooseType = (k) => {
     if (k === G + R) {
-        const idxsWithType = types.map((type, idx) => [plantedArr[idx], type]);
+        const idxsWithType = pickedIdxs.map((candIdx, idx) => [
+            ...startCand[candIdx],
+            types[idx],
+        ]);
         max = Math.max(max, bfs(idxsWithType));
         return;
     }
